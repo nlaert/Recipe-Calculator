@@ -8,28 +8,41 @@ namespace Recipe_Calculator
 {
     class Ingredient
     {
-        private double amount;
-        private String name;
+        private double Amount;
+        private String Name;
 
         public Ingredient(double amount, String name)
         {
-            this.amount = amount;
-            this.name = name;
+            this.Amount = amount;
+            this.Name = name;
         }
 
-        public String toString()
+        public Ingredient(String name)
         {
-            return amount + " " + name;
+            this.Amount = 0;
+            this.Name = name;
         }
 
-        public double getAmount()
+        
+        public override String ToString()
         {
-            return amount;
+            if(HasAmount())
+                return Amount + " " + Name;
+            return Name;
         }
 
-        internal void setAmount(double amount)
+        public bool HasAmount()
         {
-            this.amount = amount;
+            return Amount != 0;
+        }
+        public double GetAmount()
+        {
+            return Amount;
+        }
+
+        internal void SetAmount(double amount)
+        {
+            this.Amount = amount;
         }
     }
 }

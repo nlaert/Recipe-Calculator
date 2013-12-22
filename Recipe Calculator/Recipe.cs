@@ -12,6 +12,7 @@ namespace Recipe_Calculator
         private Ingredient[] ingredients;
         private const int ARRAY_GROWTH_INDEX = 5;
         private int arraySize = 15;
+        char[] trimChars = { ' ', '\t' };
 
         public Recipe()
         {
@@ -83,7 +84,7 @@ namespace Recipe_Calculator
 
         private Ingredient ToIngredientList(String ing) 
         {
-            ing.Trim();
+            ing = ing.Trim(trimChars);
             if ((ing[0] != ',' && ing[0]!='.') && (ing[0] < '0' || ing[0] > '9'))
                 return new Ingredient(ing);
             ing = PointToComma(ing);

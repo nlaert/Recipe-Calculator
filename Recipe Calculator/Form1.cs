@@ -105,9 +105,11 @@ namespace Recipe_Calculator
             if (newAmount > 0)
             {
                 int idx = comboBox1.SelectedIndex;
-                recipe.CalculateAmountByIndex(idx, newAmount);
-                PrintRecipe();
-                UpdateComboBox();
+                if (recipe.CalculateAmountByIndex(idx, newAmount))
+                {
+                     PrintRecipe();
+                     UpdateComboBox();
+                }
             }
         }
 

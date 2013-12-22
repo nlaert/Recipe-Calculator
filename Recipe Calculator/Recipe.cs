@@ -36,8 +36,12 @@ namespace Recipe_Calculator
 
         public bool CalculateAmountByIndex(int idx, double newAmount)
         {
-            double percent = newAmount / ingredients[idx].GetAmount();
-            return Calculate(percent);
+            if (ingredients[idx].HasAmount())
+            {
+                double percent = newAmount / ingredients[idx].GetAmount();
+                return Calculate(percent);
+            }
+            return false;
         }
 
         public int GetIngredientCounter()
@@ -51,6 +55,17 @@ namespace Recipe_Calculator
             for (int i = 0; i < ingredientCounter; i++)
             {
                 recipe[i] = ingredients[i].ToString();
+            }
+            return recipe;
+        }
+
+        public String[] ToStringArrayWithAmount()
+        {
+            String[] recipe = new String[ingredientCounter];
+            for (int i = 0; i < ingredientCounter; i++)
+            {
+                if(ingredients[i].HasAmount())
+                    recipe[i] = ingredients[i].ToString();
             }
             return recipe;
         }

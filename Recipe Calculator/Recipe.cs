@@ -20,11 +20,33 @@ namespace Recipe_Calculator
             ingredients = new Ingredient[arraySize];
         }
 
+        public bool ReadRecipe(String[] text)
+        {
+            for (int i = 0; i < text.Length; i++)
+            {
+                try
+                {
+                    NewIngredient(text[i]);
+                }
+                catch (FormatException)
+                {
+                    CleanIngredients();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void CleanIngredients()
+        {
+            ingredients = new Ingredient[arraySize];
+        }
+
         public void NewIngredient(String ing)
         {
             if (ingredientCounter >= ingredients.Length)
                 GrowArray();
-            ingredients[ingredientCounter] = ToIngredientList(ing);
+            ingredients[ingredientCounter] = StringToIngredient(ing);
             ingredientCounter++;
         }
 
@@ -89,15 +111,14 @@ namespace Recipe_Calculator
 
         private void GrowArray()
         {
-            Ingredient[] aux = new Ingredient[ingredients.Length + ARRAY_GROWTH_INDEX];
+            Ingredient[] aux = new Ingredient[arraySize + ARRAY_GROWTH_INDEX];
             Array.Copy(ingredients, aux, ingredientCounter);
-            //for (int i = 0; i < ingredientCounter; i++)
-            //    aux[i] = ingredient[i];
+           
             ingredients = aux;
             arraySize += ARRAY_GROWTH_INDEX;
         }
 
-        private Ingredient ToIngredientList(String ing) 
+        private Ingredient StringToIngredient(String ing) 
         {
             ing = ing.Trim(trimChars);
             if ((ing[0] != ',' && ing[0]!='.') && (ing[0] < '0' || ing[0] > '9'))
@@ -112,6 +133,17 @@ namespace Recipe_Calculator
             return new Ingredient(a, ing.Substring(space + 1));
         }
 
+        public String ToString()
+        {
+           // String[] strings = ToStringArray();
+            String ret = ingredients[0].ToString();
+            for (int i = 1; i < ingredientCounter; i++)
+            {
+                ret = ret + "\n" + ingredients[i].ToString();
+            }
+            return ret + "\r";
+        }
+        
         public static String PointToComma(String ing)
         {
             int point = ing.IndexOf('.');
@@ -119,5 +151,5 @@ namespace Recipe_Calculator
                 ing = ing.Substring(0, point + 1).Replace('.', ',') + ing.Substring(point + 1);
             return ing;
         }
-    }
+    } 
 }

@@ -12,12 +12,14 @@ namespace Recipe_Calculator
 {
     public partial class Form1 : Form
     {
+        
         private Recipe recipe = new Recipe();
         private const String  ErrorMessage = "O valor inserido não é válido.";
         private const String ErrorTitle = "Valor Inválido";
         public Form1()
         {
             InitializeComponent();
+            
             radioIngredient_CheckedChanged(null, null);
             radioPortion_CheckedChanged(null, null);
         }
@@ -51,6 +53,7 @@ namespace Recipe_Calculator
             if (recipe.GetIngredientCounter() == 0)
             {
                 if (!ReadRecipe())
+                    TextBoxInvalidValue(ingredientList);
                     recipe = new Recipe();
                     return;
             }
@@ -84,19 +87,20 @@ namespace Recipe_Calculator
         {
             String textLine = ingredientList.Text;
             String [] text = textLine.Split(new Char[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < text.Length; i++)
-            {
-                try
-                {
-                    recipe.NewIngredient(text[i]);
-                }
-                catch(FormatException){
-                    TextBoxInvalidValue(ingredientList);
-                    recipe = new Recipe();
-                    return false;
-                }
-            }
-            return true;     
+            return recipe.ReadRecipe(text);
+            //for (int i = 0; i < text.Length; i++)
+            //{
+            //    try
+            //    {
+            //        recipe.NewIngredient(text[i]);
+            //    }
+            //    catch(FormatException){
+            //        TextBoxInvalidValue(ingredientList);
+            //        recipe = new Recipe();
+            //        return false;
+            //    }
+            //}
+            //return true;     
         }
 
         private void CalculateAmount()
@@ -126,7 +130,7 @@ namespace Recipe_Calculator
 
         private void PrintRecipe()
         {
-            ingredientList.Text = Concat(recipe.ToStringArray());
+            ingredientList.Text = recipe.ToString();
             ResetColors();
         }
 
@@ -173,7 +177,7 @@ namespace Recipe_Calculator
         
         }
 
-        private void UnselectRadios(){
+        private void UncheckRadios(){
             radioIngredient.Checked = false;
             radioPortion.Checked = false;
         }
@@ -184,7 +188,7 @@ namespace Recipe_Calculator
             MessageBox.Show(ErrorMessage, ErrorTitle, MessageBoxButtons.OK ,MessageBoxIcon.Error);
             tb.BackColor = Color.Red;
             if (tb == ingredientList)
-                UnselectRadios();
+                UncheckRadios();
         }
 
         private double TextBoxToDouble(TextBox tb)
